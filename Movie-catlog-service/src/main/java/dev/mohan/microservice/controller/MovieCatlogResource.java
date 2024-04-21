@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
+
 import dev.mohan.microservice.model.CatologItem;
 import dev.mohan.microservice.model.MovieInfo;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @RestController
 @RequestMapping("/catalog")
@@ -24,8 +26,11 @@ public class MovieCatlogResource {
 	@Autowired
 	WebClient.Builder webclientBuilder;
 	
+	@CircuitBreaker(name="catalogBreaker" , fallbackMethod = "getCatlogFallBack")
 	@GetMapping(value={"/all","/{id}"})
 	public List<CatologItem> getcatologDetails(@PathVariable(required=false, value="id") String userId){
+		
+
 		
 		//Resttemplate // will be depricated in near future
 		MovieInfo movieObj = restTemplate.getForObject("http://movie-info-service/movieInfo/123", MovieInfo.class);
@@ -41,4 +46,9 @@ public class MovieCatlogResource {
 			return Collections.singletonList(new CatologItem(userId, movieObj.getMovieName(), "5"));		
 	}
 	
+	
+	public List<CatologItem> getCatlogFallBack(Throwable thr){
+		return Collections.singletonList(new CatologItem("","Movie Not found", ""));
+	}
+
 }
