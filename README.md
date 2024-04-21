@@ -82,3 +82,6 @@ BulkHead  config to specify the thread counts and configurations to seperate out
 				  .build();
 
 ------------------------------------------------------------	
+
+http://<CircuitBreaker configured path>/actuator/health -- to check the health and failure status, state of circut breaker : UP or HALF_OPEN or CLOSED
+------------------------------------------------------------

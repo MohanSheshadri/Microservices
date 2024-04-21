@@ -1,5 +1,6 @@
 package dev.mohan.microservice.controller;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import dev.mohan.microservice.model.CatologItem;
 import dev.mohan.microservice.model.MovieInfo;
+import io.github.resilience4j.bulkhead.BulkheadConfig;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @RestController
